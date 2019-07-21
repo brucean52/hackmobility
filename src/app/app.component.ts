@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'hackmobility';
-  showRegister;
 
   constructor(
     private userService: UserService,
@@ -19,7 +18,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showRegister = this.userService.isUserLoggedin();
   }
 
   logout() {
