@@ -1,30 +1,49 @@
 <div class="container">
   <mat-list class="side">
-      <mat-list-item>
+      <!-- <mat-list-item>
         <mat-form-field>
-          <input matInput placeholder="Search places..." [(ngModel)]="query" (keypress)="onKeyChange($event)" />
+          <input matInput [(ngModel)]="query" (keypress)="onKeyChange($event)" />
         </mat-form-field>
         <button mat-stroked-button color="primary" (click)="places(query)">Search</button>   
-      </mat-list-item>
+      </mat-list-item> -->
       <mat-list-item> 
-              <mat-form-field>
-                  <label >Start</label>
-                  <input matInput [(ngModel)]="start" />
-              </mat-form-field>
-
+        <mat-form-field>
+          <input matInput placeholder="Search places..."  [(ngModel)]="startObj.address" />
+        </mat-form-field>
+        <button mat-mini-fab (click)="getStartPlaces(startObj.address)" ><mat-icon>search</mat-icon></button>
       </mat-list-item>
       <mat-list-item>
           <mat-form-field>
-              <label>Finish</label>
-              <input matInput [(ngModel)]="finish" />
+            <input matInput placeholder="Set Destination..." [(ngModel)]="finishObj.address" />
           </mat-form-field>
+          <button mat-mini-fab (click)="getFinishPlaces(finishObj.address)" ><mat-icon>search</mat-icon></button>
           <button mat-stroked-button color="primary" (click)="getDirections()">Directions</button>
       </mat-list-item>
-      <ol style="float: left; background-color: #FFF; width: 35%; min-height: 530px; margin-left: 20px; margin-top: 0">
-          <li *ngFor="let direction of directions">
-              <p [innerHTML]="direction.instruction"></p>
-          </li>
+      <!-- <mat-list-item>
+          <mat-form-field>
+              <label>Geo Test</label>
+              <input matInput [(ngModel)]="geoText" />
+          </mat-form-field>
+          <button mat-stroked-button color="primary" (click)="getGeocoding()">GeoCode</button>
+      </mat-list-item> -->
+      <ul>
+        <li class="places-list" *ngFor="let place of startPlaces" (click)="setStartPlace(place)">
+          <div class="place-title">{{place.title}}</div>
+          <div class="place-vicinity" [innerHTML]="place.vicinity"></div>
+        </li>
+      </ul>
+      <ul>
+        <li class="places-list" *ngFor="let place of finishPlaces" (click)="setFinishPlace(place)">
+          <div class="place-title">{{place.title}}</div>
+          <div class="place-vicinity" [innerHTML]="place.vicinity"></div>
+        </li>
+      </ul>
+      <ol>
+        <li *ngFor="let direction of directions">
+            <p [innerHTML]="direction.instruction"></p>
+        </li>
       </ol>
   </mat-list>
+
   <div #map style="width: 1000px; height: 768px"></div> 
 </div>

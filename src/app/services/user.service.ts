@@ -36,6 +36,7 @@ export class UserService {
 
   register(user) {
       return this.http.post(`${this.BASE_ENDPOINT}/new`, user);
+
   }
 
 }
