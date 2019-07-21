@@ -14,7 +14,6 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-
     private fb: FormBuilder
   ) { }
 

@@ -1,3 +1,40 @@
-<p>
-  car works!
-</p>
+<div class="container">
+  <mat-card class="my-card" *ngIf="!carInfo">
+    <mat-card-header>
+      <mat-card-title>Please add your Car</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="carForm">
+        <mat-form-field class="full-width">
+          <mat-label>Car Name</mat-label>
+          <input matInput placeholder="Car Name" formControlName="carName" name="fname" required>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Make</mat-label>
+          <input matInput placeholder="Make" formControlName="make" name="fname" required>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Model</mat-label>
+          <input matInput placeholder="Model" formControlName="model" name="fname" required>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="addCar()" color="primary">Add A New Car</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card class="my-card" *ngIf="!!carInfo">
+    <mat-card-header>
+      <mat-card-title>Your Car Infomation</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>Car Name: {{carInfo.carName}}</mat-list-item>
+        <mat-list-item>Car Make: {{carInfo.make}}</mat-list-item>
+        <mat-list-item>Car Info: {{carInfo.model}}</mat-list-item>
+        <mat-list-item></mat-list-item>
+
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProfileComponent } from './profile.component';
 import { MaterialModule } from '../core/material.module';
 import { UserComponent } from './user/user.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
     {
@@ -37,7 +38,9 @@ const routes: Routes = [
     imports: [
         CommonModule,
         MaterialModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        FormsModule,
+        ReactiveFormsModule
     ],
 })
 export class ProfileModule { }
