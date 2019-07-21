@@ -32,19 +32,20 @@
           <mat-list-item *ngIf="startObj.lat && finishObj.lat && date && time">
             <button mat-raised-button color="primary" (click)="saveRoute()">Save Route</button>
           </mat-list-item>
-    
-          <ul>
-            <li class="places-list" *ngFor="let place of startPlaces" (click)="setStartPlace(place)">
-              <div class="place-title">{{place.title}}</div>
-              <div class="place-vicinity" [innerHTML]="place.vicinity"></div>
-            </li>
-          </ul>
-          <ul>
-            <li class="places-list" *ngFor="let place of finishPlaces" (click)="setFinishPlace(place)">
-              <div class="place-title">{{place.title}}</div>
-              <div class="place-vicinity" [innerHTML]="place.vicinity"></div>
-            </li>
-          </ul>
+          <mat-action-list *ngFor="let place of startPlaces" (click)="setStartPlace(place)">
+              <div class="place-list" mat-list-item  >
+                <div class="place-title">{{place.title}}</div>
+                <div class="place-vicinity" [innerHTML]="place.vicinity"></div>
+              </div>   
+          </mat-action-list>
+
+          <mat-action-list *ngFor="let place of finishPlaces" (click)="setFinishPlace(place)">
+              <div class="place-list" mat-list-item  >
+                <div class="place-title">{{place.title}}</div>
+                <div class="place-vicinity" [innerHTML]="place.vicinity"></div>
+              </div>   
+          </mat-action-list>
+
           <h4>My Created Rides</h4>
           <mat-accordion *ngIf="userCreatedRides.length">
               <mat-expansion-panel *ngFor="let ride of userCreatedRides" (click)="selectRide(ride)">
