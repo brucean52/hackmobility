@@ -34,10 +34,7 @@ export class UserService {
   }
 
   register(user) {
-      console.log('inside register', user);
-      this.http.post(`${this.BASE_ENDPOINT}/new`, user).subscribe((result) => {
-          console.log("register result", result);
-      })
+      return this.http.post(`${this.BASE_ENDPOINT}/new`, user);
   }
 
 }
