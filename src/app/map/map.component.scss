@@ -13,7 +13,9 @@ button {
   border: solid 1px black;
   list-style: none;
 }
-
+ul {
+  padding-left: 0;
+}
 li {
   list-style: none;
 }
@@ -30,4 +32,13 @@ mat-form-field.input {
 .select-time {
   width: 50%;
   margin-left: 10%;
+}
+
+.avail-list {
+  display: flex;
+}
+
+.add-ride {
+  height: 40px;
+  margin: auto;
 }

@@ -45,15 +45,16 @@
               <div class="place-vicinity" [innerHTML]="place.vicinity"></div>
             </li>
           </ul>
-            <ul *ngIf="userCreatedRides.length">
-              <li>My Rides</li>
-              <li class="places-list" *ngFor="let ride of userCreatedRides" (click)="selectRide(ride)">
-                <div class="place-title">Date: {{ride.date}}</div>
-                <div class="place-title">Time: {{ride.time}}</div>
-                <div class="place-title">Start: {{ride.startObj.address}}</div>
-                <div class="place-title">Finish: {{ride.finishObj.address}}</div>
-              </li>
-            </ul>
+          <ul *ngIf="userCreatedRides.length">
+            <li>My Rides</li>
+            <li class="places-list" *ngFor="let ride of userCreatedRides" (click)="selectRide(ride)">
+              <div class="place-title">Date: {{ride.date}}</div>
+              <div class="place-title">Time: {{ride.time}}</div>
+              <div class="place-title">Start: {{ride.startObj.address}}</div>
+              <div class="place-title">Finish: {{ride.finishObj.address}}</div>
+              <div class="place-title">Passengers: {{ride.passengerIds.length}}</div>
+            </li>
+          </ul>
           <!-- <ol *ngIf="directions.length">
             <p>Directions</p>
             <li *ngFor="let direction of directions">
@@ -64,7 +65,19 @@
     </mat-tab>
     <mat-tab label="Find Ride">
       <mat-list class="side">
-
+        <ul *ngIf="availableRides.length">
+            <li>Available Rides</li>
+            <li  class="avail-list" *ngFor="let ride of availableRides" >
+              <div class="places-list" (click)="selectRide(ride)">
+                <div class="place-title">Date: {{ride.date}}</div>
+                <div class="place-title">Time: {{ride.time}}</div>
+                <div class="place-title">Start: {{ride.startObj.address}}</div>
+                <div class="place-title">Finish: {{ride.finishObj.address}}</div>
+                <div class="place-title">Passengers: {{ride.passengerIds.length}}</div>
+              </div>
+              <button class="add-ride" mat-raised-button color="primary" disabled="checkPassenger(ride)" (click)="joinRide(ride)">Join</button>
+            </li>
+          </ul>
       </mat-list>
     </mat-tab>
   </mat-tab-group>

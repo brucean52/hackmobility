@@ -73,4 +73,17 @@ export class UserService {
     return this.http.get<Array<any>>(`${this.BASE_ENDPOINT}/userroutes/${userId}`);
   }
 
+  getAllRoutes() {
+    return this.http.get<Array<any>>(`${this.BASE_ENDPOINT}/routes`);
+  }
+  addPassenger(addObject: any) {
+    const postBody = {
+      routeId: addObject.routeId,
+      passengerId: addObject.passengerId,
+    };
+    return this.http.post(`${this.BASE_ENDPOINT}/addpassenger`, postBody);
+  }
+  getUserById(userId: string) {
+    return this.http.get(`${this.BASE_ENDPOINT}/id/${userId}`);
+  }
 }
