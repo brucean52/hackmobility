@@ -3,6 +3,14 @@
 }
 
 .login-card {
-    min-width: 400px;
-    margin: auto 0;
+    width: 30%;
+    margin: 5% auto;
+}
+
+mat-form-field {
+  width: 90%;
+}
+
+::ng-deep div.mat-card-header-text {
+  margin-left: 0;
 }
