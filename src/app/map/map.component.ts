@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HereService } from '../services/here.service';
+import { UserService } from '../services/user.service';
 declare var H: any;
 
 @Component({
@@ -32,21 +33,24 @@ export class MapComponent implements OnInit, AfterViewInit {
     lat: null,
     lng: null
   };
-  public geoText: string;
-  public startText: any;
-  public finishText: any;
-  public start: any;
-  public finish: any;
+  // public geoText: string;
+  // public startText: any;
+  // public finishText: any;
+  // public start: any;
+  // public finish: any;
 
 
   @ViewChild("map")
   public mapElement: ElementRef;
 
-  public constructor(private hereService: HereService) {
-      this.platform = new H.service.Platform({
-          "app_id": "en4UDxYiyY253xi8sHoX",
-          "app_code": "RNuSjnohpcBhFIVrGzP8Kg"
-      });
+  public constructor(
+    private hereService: HereService,
+    private userService: UserService
+  ) {
+    this.platform = new H.service.Platform({
+        "app_id": "en4UDxYiyY253xi8sHoX",
+        "app_code": "RNuSjnohpcBhFIVrGzP8Kg"
+    });
   }
 
   ngOnInit() { 
@@ -205,5 +209,14 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.places(this.query);
     }
   }
-
+  saveRoute() {
+    const routeObject = {
+      startObj: this.startObj,
+      finishObj: this.finishObj,
+      driverId: 'userIDGoesHere'
+    };
+    this.userService.postRoute(routeObject).subscribe( resp => {
+      console.log('post resp', resp);
+    });
+  }
 }

@@ -38,5 +38,18 @@ export class UserService {
       return this.http.post(`${this.BASE_ENDPOINT}/new`, user);
 
   }
+  postRoute(routeObject: any) {
+    const postBody = {
+      driverId: routeObject.driverId,
+      startAddress: routeObject.startObj.address,
+      startLat: routeObject.startObj.lat,
+      startLng: routeObject.startObj.lng,
+      finishAddress: routeObject.finishObj.address,
+      finishLat: routeObject.finishObj.lat,
+      finishLng: routeObject.finishObj.lng
+    };
+
+    return this.http.post(`${this.BASE_ENDPOINT}/addroute`, postBody);
+}
 
 }
