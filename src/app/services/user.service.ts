@@ -9,7 +9,9 @@ import { tap } from 'rxjs/operators';
 export class UserService {
   authenticated = false;
   BASE_ENDPOINT = "/api/user";
-  userInfo = {};
+  userInfo = {
+    id: ''
+  };
 
   constructor(
     private http: HttpClient,
@@ -60,10 +62,15 @@ export class UserService {
       startLng: routeObject.startObj.lng,
       finishAddress: routeObject.finishObj.address,
       finishLat: routeObject.finishObj.lat,
-      finishLng: routeObject.finishObj.lng
+      finishLng: routeObject.finishObj.lng,
+      date: routeObject.date,
+      time: routeObject.time
     };
 
     return this.http.post(`${this.BASE_ENDPOINT}/addroute`, postBody);
-}
+  }
+  getRoutesByDriverId(userId: any) {
+    return this.http.get<Array<any>>(`${this.BASE_ENDPOINT}/userroutes/${userId}`);
+  }
 
 }

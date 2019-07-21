@@ -1,6 +1,5 @@
 .side {
   width: 400px;
-  height: 200px;
   margin: 10px;
 }
 button {
@@ -15,7 +14,20 @@ button {
   list-style: none;
 }
 
+li {
+  list-style: none;
+}
+
 .places-list:hover {
   cursor: pointer;
   background: lightgrey;
+}
+
+mat-form-field.input {
+  width: 100%;
+}
+
+.select-time {
+  width: 50%;
+  margin-left: 10%;
 }
