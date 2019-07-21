@@ -9,3 +9,13 @@ button {
 .container {
   display: flex;
 }
+
+.places-list {
+  border: solid 1px black;
+  list-style: none;
+}
+
+.places-list:hover {
+  cursor: pointer;
+  background: lightgrey;
+}
