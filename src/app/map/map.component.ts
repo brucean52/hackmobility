@@ -325,7 +325,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   dropMarker(coordinates: any, data: any) {
     let marker = new H.map.Marker(coordinates);
-    marker.setData("<p>" + data.title + "<br>" + data.vicinity + "</p>");
+    marker.setData("<p style='font-size: 12px'>" + data.title + "<br>" + data.vicinity + "</p>");
     marker.addEventListener('tap', event => {
         let bubble =  new H.ui.InfoBubble(event.target.getPosition(), {
             content: event.target.getData()
@@ -360,10 +360,24 @@ export class MapComponent implements OnInit, AfterViewInit {
                 lat: startObj.lat,
                 lng: startObj.lng
             });
+            startMarker.setData("<p style='font-size: 12px'>" + startObj.address + "</p>");
+            startMarker.addEventListener('tap', event => {
+                let bubble =  new H.ui.InfoBubble(event.target.getPosition(), {
+                    content: event.target.getData()
+                });
+                this.ui.addBubble(bubble);
+            }, false);
             let finishMarker = new H.map.Marker({
               lat: finishObj.lat,
               lng: finishObj.lng
             });
+            finishMarker.setData("<p style='font-size: 12px'>" + finishObj.address + "</p>");
+            finishMarker.addEventListener('tap', event => {
+                let bubble =  new H.ui.InfoBubble(event.target.getPosition(), {
+                    content: event.target.getData()
+                });
+                this.ui.addBubble(bubble);
+            }, false);
             this.map.addObjects([routeLine, startMarker, finishMarker]);
             this.map.setViewBounds(routeLine.getBounds());
         }
