@@ -35,7 +35,7 @@ export class UserService {
 
   register(user) {
       console.log('inside register', user);
-      this.http.get(`${this.BASE_ENDPOINT}/profile`).subscribe((result) => {
+      this.http.post(`${this.BASE_ENDPOINT}/new`, user).subscribe((result) => {
           console.log("register result", result);
       })
   }
