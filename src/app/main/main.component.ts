@@ -27,18 +27,4 @@ export class MainComponent implements OnInit {
     });
    }
   }
-
-  onKeyChange(event) {
-    if (event.key === 'Enter') {
-      console.log('search', this.searchInput);
-      const info = {
-        input: this.searchInput,
-        lat: this.lat,
-        lng: this.lng
-      }
-      this.hereService.getPlace(info).subscribe(resp => {
-        console.log('here response', resp);
-      });
-    }
-  }
 }
