@@ -1,9 +1,18 @@
 # Hackmobility Ride Scheduler
 
-  MEAN stack application: 
-  
-  Schedule your routine routes and see if others want to join you. Or join other peoples routes.
+  MEAN stack application: Our vision for an efficient ride scheduler. Our goal is to try and maximize ride and car sharing.
 
+### Ride Share
+  - Publish everyday routes ( commute to work), and other people and see the route and decide if they wanna join together. Or I can just joined other peoples routes.
+
+### Car Share
+  - When the car is not used by owner, it can be shared for other drivers
+  - Show location, gas / electric range for roundtrip. Must return car to same location for the owner.
+  - Set time frame for when the car is available
+
+### Company Fleet
+  - no need for roundtrips
+  - use HERE Fleet telematics
   
 ## How to use
 
