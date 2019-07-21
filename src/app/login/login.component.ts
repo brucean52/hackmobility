@@ -1,24 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material'
+import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private router: Router) { }
   username: string;
   password: string;
+
+  constructor(
+    private router: Router,
+    private userService: UserService
+  ) { }
 
   ngOnInit() {
   }
 
   login(): void {
-    if (this.username == 'admin' && this.password == 'admin') {
-      this.router.navigate(["main"]);
-    } else {
-      alert("Invalid credentials");
-    }
+    this.userService.login(this.username, this.password).subscribe(
+      (result => {
+        if (result === true) {
+          this.router.navigate(["main"]);
+        } else {
+          alert("Invalid credentials");
+        }
+      })
+    )
   }
 }
