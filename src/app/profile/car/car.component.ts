@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CarService } from 'src/app/services/car.service';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder } from '@angular/forms';
+import { smartcar } from '@smartcar/auth';
 
 @Component({
   selector: 'app-car',
@@ -11,6 +12,8 @@ import { FormBuilder } from '@angular/forms';
 export class CarComponent implements OnInit {
   ownerId: string;
   carInfo: any;
+  private windowHandle: Window;   // reference to the window object we will create    
+
 
   carForm = this.fb.group({
     ownerId: [this.ownerId],
@@ -42,5 +45,23 @@ export class CarComponent implements OnInit {
         console.log("addCarToOwner", result);
       })
   }
+
+  connectSmartCar() {
+    return this.carService.getSmartCarOAuthURL().subscribe(
+      (result:any) => {
+        const {link} = result;
+        this.windowHandle = this.createOauthWindow(link);
+      }
+    )
+    // createOauthWindow
+  }
+
+  createOauthWindow(url: string, name = 'Authorization', width = 500, height = 600, left = 0, top = 0) {
+    if (url == null) {
+        return null;
+    }
+    const options = `width=${width},height=${height},left=${left},top=${top}`;
+    return window.open(url, name, options);
+}
 
 }

@@ -18,4 +18,8 @@ export class CarService {
     addCarToOwner(carInfo) {
         return this.http.post(`${this.BASE_ENDPOINT}`, carInfo);
     }
+
+    getSmartCarOAuthURL() {
+        return this.http.get(`${this.BASE_ENDPOINT}/smart_car_url`);
+    }
 }
