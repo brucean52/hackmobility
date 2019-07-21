@@ -27,11 +27,11 @@ export class MapComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public ngOnInit() { 
+    ngOnInit() { 
       this.search = new H.places.Search(this.platform.getPlacesService());
     }
 
-    public ngAfterViewInit() {
+    ngAfterViewInit() {
         let defaultLayers = this.platform.createDefaultLayers();
         this.map = new H.Map(
             this.mapElement.nativeElement,
@@ -41,6 +41,7 @@ export class MapComponent implements OnInit, AfterViewInit {
                 center: { lat: this.lat, lng: this.lng }
             }
         );
+        let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
         this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
     }
     places(query: string) {
@@ -65,6 +66,11 @@ export class MapComponent implements OnInit, AfterViewInit {
           this.ui.addBubble(bubble);
       }, false);
       this.map.addObject(marker);
+  }
+    onKeyChange(event) {
+    if (event.key === 'Enter') {
+      this.places(this.query);
+    }
   }
 
 }
