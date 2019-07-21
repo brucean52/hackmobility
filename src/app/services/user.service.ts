@@ -3,6 +3,15 @@ import {HttpClient} from '@angular/common/http';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+interface Rides {
+  startObj: any;
+  finishObj: any;
+  passengerIds: any;
+  driverId: string;
+  date: string;
+  time: string;
+}
+
 @Injectable({
     providedIn: "root"
 })
@@ -74,7 +83,7 @@ export class UserService {
   }
 
   getAllRoutes() {
-    return this.http.get<Array<any>>(`${this.BASE_ENDPOINT}/routes`);
+    return this.http.get<Array<Rides>>(`${this.BASE_ENDPOINT}/routes`);
   }
   addPassenger(addObject: any) {
     const postBody = {
@@ -82,6 +91,13 @@ export class UserService {
       passengerId: addObject.passengerId,
     };
     return this.http.post(`${this.BASE_ENDPOINT}/addpassenger`, postBody);
+  }
+  removePassenger(addObject: any) {
+    const postBody = {
+      routeId: addObject.routeId,
+      passengerId: addObject.passengerId,
+    };
+    return this.http.post(`${this.BASE_ENDPOINT}/removepassenger`, postBody);
   }
   getUserById(userId: string) {
     return this.http.get(`${this.BASE_ENDPOINT}/id/${userId}`);
