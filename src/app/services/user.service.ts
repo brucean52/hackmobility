@@ -16,12 +16,9 @@ export class UserService {
   }
 
   login(username: string, password: string) {
-      if (username === 'admin' && password === 'admin') {
-          this.authenticated = true;
-          return of(true);
-      } else {
-          return of(false);
-      }
+      return this.http.post(`${this.BASE_ENDPOINT}/login`, {
+          username, password
+      });
   }
 
   logout() {
@@ -33,11 +30,13 @@ export class UserService {
       return this.authenticated;
   }
 
+  setUserAuthenticated(auth: boolean) {
+      this.authenticated = auth;
+  } 
+
   register(user) {
-      console.log('inside register', user);
-      this.http.get(`${this.BASE_ENDPOINT}/profile`).subscribe((result) => {
-          console.log("register result", result);
-      })
+      return this.http.post(`${this.BASE_ENDPOINT}/new`, user);
+
   }
 
 }
