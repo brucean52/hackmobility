@@ -1,1 +1,15 @@
-<div #map style="width: 1000px; height: 768px"></div> 
+<!-- <div style="padding: 10px 0">
+    <input type="text" placeholder="Search places..." [(ngModel)]="query" />
+    <button (click)="places(query)">Search</button>
+</div> -->
+<div class="container">
+  <mat-list class="side">
+      <mat-list-item>    
+        <input matInput type="text" placeholder="Search places..." [(ngModel)]="query" />
+        <button (click)="places(query)">Search</button>
+      </mat-list-item>
+      <mat-list-item> Salt </mat-list-item>
+      <mat-list-item> Paprika </mat-list-item>
+      </mat-list>
+  <div #map style="width: 1000px; height: 768px"></div> 
+</div>

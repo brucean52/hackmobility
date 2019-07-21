@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 
 declare var H: any;
 
@@ -10,6 +10,12 @@ declare var H: any;
 export class MapComponent implements OnInit, AfterViewInit {
 
     private platform: any;
+    private ui: any;
+    private search: any;
+    private map: any;
+    public query: string;
+    @Input() lat: number;
+    @Input() lng: number;
 
     @ViewChild("map")
     public mapElement: ElementRef;
@@ -21,18 +27,44 @@ export class MapComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public ngOnInit() { }
+    public ngOnInit() { 
+      this.search = new H.places.Search(this.platform.getPlacesService());
+    }
 
     public ngAfterViewInit() {
         let defaultLayers = this.platform.createDefaultLayers();
-        let map = new H.Map(
+        this.map = new H.Map(
             this.mapElement.nativeElement,
             defaultLayers.normal.map,
             {
                 zoom: 10,
-                center: { lat: 37.7397, lng: -121.4252 }
+                center: { lat: this.lat, lng: this.lng }
             }
         );
+        this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
     }
+    places(query: string) {
+      this.map.removeObjects(this.map.getObjects());
+      this.search.request({ "q": query, "at": this.lat + "," + this.lng }, {}, data => {
+        console.log('places data', data);
+          for(let i = 0; i < data.results.items.length; i++) {
+              this.dropMarker({ "lat": data.results.items[i].position[0], "lng": data.results.items[i].position[1] }, data.results.items[i]);
+          }
+      }, error => {
+          console.error(error);
+      });
+  }
+
+    dropMarker(coordinates: any, data: any) {
+      let marker = new H.map.Marker(coordinates);
+      marker.setData("<p>" + data.title + "<br>" + data.vicinity + "</p>");
+      marker.addEventListener('tap', event => {
+          let bubble =  new H.ui.InfoBubble(event.target.getPosition(), {
+              content: event.target.getData()
+          });
+          this.ui.addBubble(bubble);
+      }, false);
+      this.map.addObject(marker);
+  }
 
 }

@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { MainComponent } from './main/main.component';
 import { LoginComponent } from './login/login.component';
+import { HereService } from './services/here.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { LoginComponent } from './login/login.component';
     FormsModule
     //NgbModule
   ],
-  providers: [],
+  providers: [HereService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
