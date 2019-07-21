@@ -4,6 +4,7 @@ import { MainComponent } from './main/main.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { AuthGuard } from './core/auth.guard';
+import { CarShareComponent } from './carshare/carshare.component';
 
 const routes: Routes = [
   { 
@@ -14,9 +15,13 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegistrationComponent},
   { 
-    path: 'main', 
+    path: 'rideshare', 
     canActivate: [AuthGuard],
-    component: MainComponent}
+    component: MainComponent},
+    { 
+      path: 'carshare', 
+      canActivate: [AuthGuard],
+      component: CarShareComponent}
 ];
 
 @NgModule({

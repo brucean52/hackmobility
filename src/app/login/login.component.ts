@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
       (result:any) => {
         console.log("!!!! result", result);
         if (result.isAuthenticated === true) {
-          this.router.navigate(["main"]);
+          this.router.navigate(["rideshare"]);
         } else {
           alert("Invalid credentials");
         }
