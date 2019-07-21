@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HereService } from './services/here.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CarShareComponent } from './carshare/carshare.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MapComponent,
     MainComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    CarShareComponent
   ],
   imports: [
     BrowserAnimationsModule,

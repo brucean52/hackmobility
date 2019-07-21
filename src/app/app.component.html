@@ -2,6 +2,8 @@
     <mat-toolbar-row>
       <!--  <span>HOME</span> -->
        <span>{{title}}</span>
+       <a mat-button routerLink="/rideshare">Ride Share</a>
+       <a mat-button routerLink="/carshare">Car Share</a>
        <span class="spacer"></span>
        <a mat-button routerLink="/register" *ngIf="!userService.isUserAuthenticated()">Register</a>
        <a mat-button routerLink="/login" *ngIf="!userService.isUserAuthenticated()">Login</a>

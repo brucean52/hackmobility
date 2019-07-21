@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         if (result.isAuthenticated === true) {
           console.log("@@@@");
           this.userService.setUserAuthenticated(true);
-          this.router.navigate(["main"]);
+          this.router.navigate(["rideshare"]);
         } else {
           alert("Invalid credentials");
         }
