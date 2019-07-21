@@ -26,7 +26,6 @@ export class UserService {
                 this.authenticated = true;
                 this.userInfo = login;
             }
-            console.log("!!!inside login", this.userInfo);
           })
       );
   }
