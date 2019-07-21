@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-
+import { HereService } from '../services/here.service';
 declare var H: any;
 
 @Component({
@@ -18,7 +18,23 @@ export class MapComponent implements OnInit, AfterViewInit {
   private router: any;
   public directions: any;
   public query: string;
+  public geocoder: any;
 
+  public startPlaces = [];
+  public finishPlaces = [];
+  startObj = {
+    address: '',
+    lat: null,
+    lng: null
+  };
+  finishObj = {
+    address: '',
+    lat: null,
+    lng: null
+  };
+  public geoText: string;
+  public startText: any;
+  public finishText: any;
   public start: any;
   public finish: any;
 
@@ -26,7 +42,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild("map")
   public mapElement: ElementRef;
 
-  public constructor() {
+  public constructor(private hereService: HereService) {
       this.platform = new H.service.Platform({
           "app_id": "en4UDxYiyY253xi8sHoX",
           "app_code": "RNuSjnohpcBhFIVrGzP8Kg"
@@ -37,6 +53,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.search = new H.places.Search(this.platform.getPlacesService());
     this.directions = [];
     this.router = this.platform.getRoutingService();
+    this.geocoder = this.platform.getGeocodingService();
   }
 
   ngAfterViewInit() {
@@ -51,18 +68,77 @@ export class MapComponent implements OnInit, AfterViewInit {
     );
     let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
-    this.route(this.start, this.finish);
-  }
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if ((changes["start"] && !changes["start"].isFirstChange()) || (changes["finish"] && !changes["finish"].isFirstChange())) {
-  //     console.log('start', this.start);
-  //     this.route(this.start, this.finish);
-  //   }
-  // }
-  getDirections() {
-    this.route(this.start, this.finish);
+
   }
 
+  getDirections() {
+    this.route(this.startObj, this.finishObj);
+  }
+
+  getGeocoding(text: string) {
+    console.log('text', text);
+    const geocodingParams = {
+      searchText: text  
+    };
+    this.geocoder.geocode(geocodingParams,
+      result => {
+      console.log('result', result);
+    },
+    error => {
+      console.log('error', error);
+    });
+  }
+
+  getStartPlaces(text: string) {
+    const info = {
+      input: text,
+      lat: this.lat,
+      lng: this.lng
+    };
+    this.hereService.getPlace(info).subscribe( resp => {
+      console.log('get Places', resp);
+      this.startPlaces = [];
+      resp.results.map(item => {
+        this.startPlaces.push(item);
+      });
+    });
+    this.places(text);
+  }
+
+  getFinishPlaces(text: string) {
+    const info = {
+      input: text,
+      lat: this.lat,
+      lng: this.lng
+    };
+    this.hereService.getPlace(info).subscribe( resp => {
+      console.log('get finish Places', resp);
+      this.finishPlaces = [];
+      resp.results.map(item => {
+        this.finishPlaces.push(item);
+      });
+    });
+    this.places(text);
+  }
+
+  setStartPlace(place: any) {
+    const plainText = place.vicinity.replace(/<[^>]*>/g, '');
+    this.startObj = {
+      address: plainText,
+      lat: place.position[0],
+      lng: place.position[1]
+    };
+    this.startPlaces = [];
+  }
+  setFinishPlace(place: any) {
+    const plainText = place.vicinity.replace(/<[^>]*>/g, '');
+    this.finishObj = {
+      address: plainText,
+      lat: place.position[0],
+      lng: place.position[1]
+    };
+    this.finishPlaces = [];
+  }
   places(query: string) {
     this.map.removeObjects(this.map.getObjects());
     this.search.request({ "q": query, "at": this.lat + "," + this.lng }, {}, data => {
@@ -86,11 +162,13 @@ export class MapComponent implements OnInit, AfterViewInit {
     }, false);
     this.map.addObject(marker);
   }
-  route(start: any, finish: any) {
+  route(startObj: any, finishObj: any) {
+    let startArr = [startObj.lat, startObj.lng];
+    let finishArr = [finishObj.lat, finishObj.lng];
     let params = {
         "mode": "fastest;car",
-        "waypoint0": "geo!" + this.start,
-        "waypoint1": "geo!" + this.finish,
+        "waypoint0": "geo!" + startArr,
+        "waypoint1": "geo!" + finishArr,
         "representation": "display"
     }
     this.map.removeObjects(this.map.getObjects());
@@ -107,12 +185,12 @@ export class MapComponent implements OnInit, AfterViewInit {
                 style: { strokeColor: "blue", lineWidth: 5 }
             });
             let startMarker = new H.map.Marker({
-                lat: this.start.split(",")[0],
-                lng: this.start.split(",")[1]
+                lat: startObj.lat,
+                lng: startObj.lng
             });
             let finishMarker = new H.map.Marker({
-                lat: this.finish.split(",")[0],
-                lng: this.finish.split(",")[1]
+              lat: finishObj.lat,
+              lng: finishObj.lng
             });
             this.map.addObjects([routeLine, startMarker, finishMarker]);
             this.map.setViewBounds(routeLine.getBounds());
