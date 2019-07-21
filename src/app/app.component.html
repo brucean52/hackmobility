@@ -1,13 +1,18 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <!--  <span>HOME</span> -->
-       <span>{{title}}</span>
-       <a mat-button routerLink="/rideshare" *ngIf="userService.isUserAuthenticated()">Ride Share</a>
-       <a mat-button routerLink="/carshare" *ngIf="userService.isUserAuthenticated()">Car Share</a>
-       <span class="spacer"></span>
-       <a mat-button routerLink="/register" *ngIf="!userService.isUserAuthenticated()">Register</a>
-       <a mat-button routerLink="/login" *ngIf="!userService.isUserAuthenticated()">Login</a>
-       <a mat-button *ngIf="userService.isUserAuthenticated()" (click)="logout()">Logout</a>
+        <!--  <span>HOME</span> -->
+        <span>{{title}}</span>
+        <a mat-button routerLink="/rideshare" *ngIf="userService.isUserAuthenticated()">Ride Share</a>
+        <a mat-button routerLink="/carshare" *ngIf="userService.isUserAuthenticated()">Car Share</a>
+        <span class="spacer"></span>
+        <a mat-button routerLink="/register" *ngIf="!userService.isUserAuthenticated()">Register</a>
+        <a mat-button routerLink="/login" *ngIf="!userService.isUserAuthenticated()">Login</a>
+        <button mat-button *ngIf="userService.isUserAuthenticated()" [matMenuTriggerFor]="menu">{{userService.getCurrentUserInfo().email}}</button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="/profile">Profile</button>
+            <button mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
+        <!-- <a mat-button *ngIf="userService.isUserAuthenticated()" (click)="logout()">Logout</a> -->
     </mat-toolbar-row>
- </mat-toolbar>
+</mat-toolbar>
 <router-outlet></router-outlet>
