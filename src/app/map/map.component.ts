@@ -16,8 +16,8 @@ export class MapComponent implements OnInit, AfterViewInit {
 
     public constructor() {
         this.platform = new H.service.Platform({
-            "app_id": "APP-ID-HERE",
-            "app_code": "APP-CODE-HERE"
+            "app_id": "en4UDxYiyY253xi8sHoX",
+            "app_code": "RNuSjnohpcBhFIVrGzP8Kg"
         });
     }
 
