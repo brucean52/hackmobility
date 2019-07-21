@@ -11,7 +11,7 @@ declare var H: any;
 export class MapComponent implements OnInit, AfterViewInit {
   @Input() lat: number;
   @Input() lng: number;
-
+  panelOpenState = false;
   private platform: any;
   private ui: any;
   private search: any;
@@ -201,6 +201,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   ];
   userCreatedRides = [];
   availableRides = [];
+  joinedRides = [];
 
   @ViewChild("map")
   public mapElement: ElementRef;
@@ -292,7 +293,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   setStartPlace(place: any) {
-    const plainText = place.vicinity.replace(/<[^>]*>/g, '');
+    const plainText = place.vicinity.replace(/<[^>]*>/g, ' ');
     this.startObj = {
       address: plainText,
       lat: place.position[0],
@@ -301,7 +302,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.startPlaces = [];
   }
   setFinishPlace(place: any) {
-    const plainText = place.vicinity.replace(/<[^>]*>/g, '');
+    const plainText = place.vicinity.replace(/<[^>]*>/g, ' ');
     this.finishObj = {
       address: plainText,
       lat: place.position[0],
@@ -404,7 +405,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   getUserRides() {
     const userInfo = this.userService.getCurrentUserInfo();
     this.userService.getRoutesByDriverId(userInfo.id).subscribe( resp => {
-      console.log('user created routes', resp);
       this.userCreatedRides = resp;
     });
   }
@@ -412,21 +412,39 @@ export class MapComponent implements OnInit, AfterViewInit {
   findRides() {
     const userInfo = this.userService.getCurrentUserInfo();
     this.userService.getAllRoutes().subscribe( resp => {
-      console.log('all routes', resp);
-      this.availableRides = resp.filter( ride => ride.driverId !== userInfo.id );
+      this.availableRides = [];
+      this.joinedRides = [];
+      const rides = resp.filter( ride => ride.driverId !== userInfo.id );
+      rides.map( ride => {
+        if ( ride.passengerIds.some( id => id === userInfo.id) ) {
+          this.joinedRides.push(ride);
+        } else {
+          this.availableRides.push(ride);
+        }
+      });
     });
   }
 
   joinRide(ride: any) {
     const userInfo = this.userService.getCurrentUserInfo();
-    console.log('join ride', ride);
     const addObject = {
       routeId: ride._id,
       passengerId: userInfo.id
-
     }
     this.userService.addPassenger(addObject).subscribe( resp => {
-      console.log('resp', resp);
+      this.findRides();
+    });
+  }
+
+  removeRide(ride: any) {
+    const userInfo = this.userService.getCurrentUserInfo();
+    const removeObject = {
+      routeId: ride._id,
+      passengerId: userInfo.id
+    }
+    this.userService.removePassenger(removeObject).subscribe( resp => {
+
+      this.findRides();
     });
   }
 
@@ -434,7 +452,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     const userInfo = this.userService.getCurrentUserInfo();
     if (ride.passengerIds.length) {
       const hasPassenger = ride.passengerIds.filter( passenger => passenger === userInfo.id );
-      if ( hasPassenger ) {
+      if ( hasPassenger.length ) {
         return true;
       } else {
         return false;
@@ -442,5 +460,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     } else {
       return false;
     }
+  }
+
+  formatDate(date: string) {
+    const newDate = date.split('T');
+    return newDate[0];
   }
 }
