@@ -22,4 +22,7 @@ export class CarService {
     getSmartCarOAuthURL() {
         return this.http.get(`${this.BASE_ENDPOINT}/smart_car_url`);
     }
+    getVehicles() {
+      return this.http.get(`${this.BASE_ENDPOINT}/smart_car/vehicles`);
+  }
 }
