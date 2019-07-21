@@ -16,12 +16,9 @@ export class UserService {
   }
 
   login(username: string, password: string) {
-      if (username === 'admin' && password === 'admin') {
-          this.authenticated = true;
-          return of(true);
-      } else {
-          return of(false);
-      }
+      return this.http.post(`${this.BASE_ENDPOINT}/login`, {
+          username, password
+      });
   }
 
   logout() {
@@ -32,6 +29,10 @@ export class UserService {
   isUserAuthenticated() {
       return this.authenticated;
   }
+
+  setUserAuthenticated(auth: boolean) {
+      this.authenticated = auth;
+  } 
 
   register(user) {
       return this.http.post(`${this.BASE_ENDPOINT}/new`, user);

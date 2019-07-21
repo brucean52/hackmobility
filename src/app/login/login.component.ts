@@ -21,13 +21,16 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     this.userService.login(this.username, this.password).subscribe(
-      (result => {
-        if (result === true) {
+      (result:any) => {
+        console.log("!!!! result", result);
+        if (result.isAuthenticated === true) {
+          console.log("@@@@");
+          this.userService.setUserAuthenticated(true);
           this.router.navigate(["main"]);
         } else {
           alert("Invalid credentials");
         }
-      })
+      }
     )
   }
 }
