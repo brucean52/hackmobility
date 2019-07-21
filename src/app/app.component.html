@@ -3,9 +3,9 @@
       <!--  <span>HOME</span> -->
        <span><a href="/">{{title}}</a></span>
        <span class="spacer"></span>
-       <a mat-button routerLink="/register" *ngIf="!userService.isUserLoggedin()">Register</a>
-       <a mat-button routerLink="/login" *ngIf="!userService.isUserLoggedin()">Login</a>
-       <a mat-button *ngIf="userService.isUserLoggedin()" (click)="logout()">Logout</a>
+       <a mat-button routerLink="/register" *ngIf="!userService.isUserAuthenticated()">Register</a>
+       <a mat-button routerLink="/login" *ngIf="!userService.isUserAuthenticated()">Login</a>
+       <a mat-button *ngIf="userService.isUserAuthenticated()" (click)="logout()">Logout</a>
     </mat-toolbar-row>
  </mat-toolbar>
 <router-outlet></router-outlet>

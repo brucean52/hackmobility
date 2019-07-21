@@ -6,7 +6,7 @@ import { of } from 'rxjs';
     providedIn: "root"
 })
 export class UserService {
-  loggedin = false;
+  authenticated = false;
 
   constructor(
     private http: HttpClient,
@@ -16,7 +16,7 @@ export class UserService {
 
   login(username: string, password: string) {
       if (username === 'admin' && password === 'admin') {
-          this.loggedin = true;
+          this.authenticated = true;
           return of(true);
       } else {
           return of(false);
@@ -24,12 +24,12 @@ export class UserService {
   }
 
   logout() {
-      this.loggedin = false;
+      this.authenticated = false;
       return of(true);
   }
 
-  isUserLoggedin() {
-      return this.loggedin;
+  isUserAuthenticated() {
+      return this.authenticated;
   }
 
 }
