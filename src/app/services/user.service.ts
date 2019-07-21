@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 })
 export class UserService {
   authenticated = false;
+  BASE_ENDPOINT = "/api/user";
 
   constructor(
     private http: HttpClient,
@@ -30,6 +31,13 @@ export class UserService {
 
   isUserAuthenticated() {
       return this.authenticated;
+  }
+
+  register(user) {
+      console.log('inside register', user);
+      this.http.get(`${this.BASE_ENDPOINT}/profile`).subscribe((result) => {
+          console.log("register result", result);
+      })
   }
 
 }
