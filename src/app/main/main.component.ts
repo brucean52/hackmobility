@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent {
-
+  searchInput: string = '';
+  onKeyChange(event) {
+    if (event.key === 'Enter') {
+      console.log('search', this.searchInput);
+      // submit
+    }
+  }
 }
