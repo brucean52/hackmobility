@@ -20,6 +20,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   public directions: any;
   public query: string;
   public geocoder: any;
+  public date = '';
+  public time = '';
 
   public startPlaces = [];
   public finishPlaces = [];
@@ -33,12 +35,171 @@ export class MapComponent implements OnInit, AfterViewInit {
     lat: null,
     lng: null
   };
-  // public geoText: string;
-  // public startText: any;
-  // public finishText: any;
-  // public start: any;
-  // public finish: any;
 
+  timeArray = [
+    {
+      view: "12:00 AM",
+      value: "0000"
+    },
+    {
+      view: "12:30 AM",
+      value: "0030"
+    },
+    {
+      view: "1:00 AM",
+      value: "0100"
+    },
+    {
+      view: "1:30 AM",
+      value: "0130"
+    },
+    {
+      view: "2:00 AM",
+      value: "0200"
+    },
+    {
+      view: "2:30 AM",
+      value: "0230"
+    },
+    {
+      view: "3:00 AM",
+      value: "0300"
+    },
+    {
+      view: "3:30 AM",
+      value: "0330"
+    },
+    {
+      view: "4:00 AM",
+      value: "0400"
+    },
+    {
+      view: "4:30 AM",
+      value: "0430"
+    },
+    {
+      view: "5:00 AM",
+      value: "0500"
+    },
+    {
+      view: "5:30 AM",
+      value: "0530"
+    },
+    {
+      view: "6:00 AM",
+      value: "0600"
+    },
+    {
+      view: "6:30 AM",
+      value: "0630"
+    },
+    {
+      view: "7:00 AM",
+      value: "0700"
+    },
+    {
+      view: "7:30 AM",
+      value: "0730"
+    },
+    {
+      view: "8:00 AM",
+      value: "0800"
+    },
+    {
+      view: "8:30 AM"
+    },
+    {
+      view: "9:00 AM"
+    },
+    {
+      view: "9:30 AM"
+    },
+    {
+      view: "10:00 AM"
+    },
+    {
+      view: "10:30 AM"
+    },
+    {
+      view: "11:00 AM"
+    },
+    {
+      view: "11:30 AM"
+    },
+    {
+      view: "12:00 PM"
+    },
+    {
+      view: "12:30 PM"
+    },
+    {
+      view: "1:00 PM"
+    },
+    {
+      view: "1:30 PM"
+    },
+    {
+      view: "2:00 PM"
+    },
+    {
+      view: "2:30 PM"
+    },
+    {
+      view: "3:00 PM"
+    },
+    {
+      view: "3:30 PM"
+    },
+    {
+      view: "4:00 PM"
+    },
+    {
+      view: "4:30 PM"
+    },
+    {
+      view: "5:00 PM"
+    },
+    {
+      view: "5:30 PM"
+    },
+    {
+      view: "6:00 PM"
+    },
+    {
+      view: "6:30 PM"
+    },
+    {
+      view: "7:00 PM"
+    },
+    {
+      view: "7:30 PM"
+    },
+    {
+      view: "8:00 PM"
+    },
+    {
+      view: "8:30 PM"
+    },
+    {
+      view: "9:00 PM"
+    },
+    {
+      view: "9:30 PM"
+    },
+    {
+      view: "10:00 PM"
+    },
+    {
+      view: "10:30 PM"
+    },
+    {
+      view: "11:00 PM"
+    },
+    {
+      view: "11:30 PM"
+    }
+  ];
+  userCreatedRides = [];
 
   @ViewChild("map")
   public mapElement: ElementRef;
@@ -57,7 +218,12 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.search = new H.places.Search(this.platform.getPlacesService());
     this.directions = [];
     this.router = this.platform.getRoutingService();
-    this.geocoder = this.platform.getGeocodingService();
+    // this.geocoder = this.platform.getGeocodingService();
+    const userInfo = this.userService.getCurrentUserInfo();
+    this.userService.getRoutesByDriverId(userInfo.id).subscribe( resp => {
+      console.log('user created routes', resp);
+      this.userCreatedRides = resp;
+    });
   }
 
   ngAfterViewInit() {
@@ -124,6 +290,9 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
     this.places(text);
   }
+  selectRide(ride: any) {
+    this.route(ride.startObj, ride.finishObj);
+  }
 
   setStartPlace(place: any) {
     const plainText = place.vicinity.replace(/<[^>]*>/g, '');
@@ -142,6 +311,7 @@ export class MapComponent implements OnInit, AfterViewInit {
       lng: place.position[1]
     };
     this.finishPlaces = [];
+    this.getDirections();
   }
   places(query: string) {
     this.map.removeObjects(this.map.getObjects());
@@ -210,13 +380,27 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   }
   saveRoute() {
+    const userInfo = this.userService.getCurrentUserInfo();
     const routeObject = {
       startObj: this.startObj,
       finishObj: this.finishObj,
-      driverId: 'userIDGoesHere'
+      driverId: userInfo.id,
+      date: this.date,
+      time: this.time
     };
     this.userService.postRoute(routeObject).subscribe( resp => {
-      console.log('post resp', resp);
+      this.startObj = {
+        address: '',
+        lat: null,
+        lng: null
+      };
+      this.finishObj = {
+        address: '',
+        lat: null,
+        lng: null
+      };
+      this.date = '';
+      this.time = '';
     });
   }
 }
