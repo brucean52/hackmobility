@@ -102,4 +102,10 @@ export class UserService {
   getUserById(userId: string) {
     return this.http.get(`${this.BASE_ENDPOINT}/id/${userId}`);
   }
+  deleteRoute(routeId: string) {
+    const postBody = {
+      routeId
+    };
+    return this.http.post(`${this.BASE_ENDPOINT}/deleteroute`, postBody);
+  }
 }

@@ -413,8 +413,8 @@ export class MapComponent implements OnInit, AfterViewInit {
       };
       this.date = '';
       this.time = '';
+      this.getUserRides();
     });
-    this.getUserRides();
   }
   getUserRides() {
     const userInfo = this.userService.getCurrentUserInfo();
@@ -457,8 +457,12 @@ export class MapComponent implements OnInit, AfterViewInit {
       passengerId: userInfo.id
     }
     this.userService.removePassenger(removeObject).subscribe( resp => {
-
       this.findRides();
+    });
+  }
+  deleteRide(ride: any) {
+    this.userService.deleteRoute(ride._id).subscribe( resp => {
+      this.getUserRides();
     });
   }
 

@@ -60,6 +60,7 @@
                 <div class="place-title">Start: {{ride.startObj.address}}</div>
                 <div class="place-title">Finish: {{ride.finishObj.address}}</div>
                 <div class="place-title">Passengers: {{ride.passengerIds.length}}</div>
+                <button class="add-ride" mat-raised-button color="warn" (click)="deleteRide(ride)">Remove</button>
               </mat-expansion-panel>
             </mat-accordion>
           <!-- <ol *ngIf="directions.length">
