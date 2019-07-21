@@ -200,6 +200,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     }
   ];
   userCreatedRides = [];
+  availableRides = [];
 
   @ViewChild("map")
   public mapElement: ElementRef;
@@ -219,11 +220,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.directions = [];
     this.router = this.platform.getRoutingService();
     // this.geocoder = this.platform.getGeocodingService();
-    const userInfo = this.userService.getCurrentUserInfo();
-    this.userService.getRoutesByDriverId(userInfo.id).subscribe( resp => {
-      console.log('user created routes', resp);
-      this.userCreatedRides = resp;
-    });
+    this.getUserRides();
   }
 
   ngAfterViewInit() {
@@ -238,7 +235,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     );
     let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
-
+    this.findRides();
   }
 
   getDirections() {
@@ -402,5 +399,48 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.date = '';
       this.time = '';
     });
+    this.getUserRides();
+  }
+  getUserRides() {
+    const userInfo = this.userService.getCurrentUserInfo();
+    this.userService.getRoutesByDriverId(userInfo.id).subscribe( resp => {
+      console.log('user created routes', resp);
+      this.userCreatedRides = resp;
+    });
+  }
+
+  findRides() {
+    const userInfo = this.userService.getCurrentUserInfo();
+    this.userService.getAllRoutes().subscribe( resp => {
+      console.log('all routes', resp);
+      this.availableRides = resp.filter( ride => ride.driverId !== userInfo.id );
+    });
+  }
+
+  joinRide(ride: any) {
+    const userInfo = this.userService.getCurrentUserInfo();
+    console.log('join ride', ride);
+    const addObject = {
+      routeId: ride._id,
+      passengerId: userInfo.id
+
+    }
+    this.userService.addPassenger(addObject).subscribe( resp => {
+      console.log('resp', resp);
+    });
+  }
+
+  checkPassenger(ride: any) {
+    const userInfo = this.userService.getCurrentUserInfo();
+    if (ride.passengerIds.length) {
+      const hasPassenger = ride.passengerIds.filter( passenger => passenger === userInfo.id );
+      if ( hasPassenger ) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }
