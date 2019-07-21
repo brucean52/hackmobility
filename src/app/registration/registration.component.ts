@@ -33,8 +33,8 @@ export class RegistrationComponent implements OnInit {
     this.userService.register(this.userForm.getRawValue()).subscribe((result:any) => {
       console.log(result);
       if (result.status === 201) {
-          this.router.navigate['/login'];
-        }
+        this.router.navigate['/rideshare'];
+      }
     }, (err) =>{
         console.log("!!!error in registration", err);
     });
